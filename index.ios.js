@@ -25,7 +25,7 @@ export default class Livefyy extends Component {
 		this.state = { dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
 		loaded: false, 
 	    videoId: 'PPlgwo0bfQk',
-		queryTerm: 'pearl jam',};
+		queryTerm: 'paramore',};
 	}
 
 	_getVideosByQueryTerm() {
@@ -49,26 +49,28 @@ export default class Livefyy extends Component {
 		});
 	}
 
-	_performVideoSearch(){
+	_performVideoSearch(rowData){
 		this.state.isLoading = true;
 		//aqui vai a chamada para o backend no mundo ideal
-		fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+ this.state.videoId +'&key=AIzaSyCdgUFUubI6tRilTsqKghw18gig7Dri3dE')
+		fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+ rowData.id.videoId +'&key=AIzaSyCdgUFUubI6tRilTsqKghw18gig7Dri3dE')
 		.then((response) => response.json())
 		.then((responseJson) => {
 			//parse description for timestamps
-			var result = responseJson.items[0].snippet;
-			var desc = result.description;
-			var parts = desc.split('\n');
-			var list = [];
-			var i;
+			let result = responseJson.items[0].snippet;
+			let desc = result.description;
+			let parts = desc.split('\n');
+			let list = [];
+			let i;
 			for (i in parts){
-				var patt = new RegExp("([0-9]{2}:)?[0-9]{2}:[0-9]{2}");
-				var res = /[0-9]{2}:[0-9]{2}/.exec(parts[i]); //here goes time as (hh:)mm:ss
-				console.log(res);
-				console.log(typeof(res) === 'object' ? 'a':'b');
+				let patt = new RegExp("([0-9]{2}:)?[0-9]{2}:[0-9]{2}");
+				let res = /([0-9]{0,2}:)?[0-9]{2}:[0-9]{2}/.exec(parts[i]); //here goes time as (hh:)mm:ss
+				//let res = patt.exec(parts[i]);
+				for (eachItem in res){
+					console.log(res[eachItem]);
+				}
 		}
 			
-			//Alert.alert(list)
+			//Alert.alert(res)
 			
 		})
 		.catch((error) => {
@@ -97,8 +99,10 @@ export default class Livefyy extends Component {
 							<TouchableHighlight 
 								underlayColor='#ffc299'
 								onPress={() => {
-									this.state.videoId = rowData.id.videoId;
-									this._performVideoSearch();
+									//console.log(videoId);
+									//console.log(rowData.id.videoId);
+									//this.setState({videoId});
+									this._performVideoSearch(rowData);
 									}} >
 								<View style={{flexDirection:'row', paddingTop: 10, paddingLeft:10, paddingBottom: 10}}>
 									<Image
