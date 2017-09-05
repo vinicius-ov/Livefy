@@ -61,3 +61,7 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+#node_modules for a fine react-native app
+
+node_modules/
