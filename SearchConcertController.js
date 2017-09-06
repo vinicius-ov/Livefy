@@ -68,11 +68,13 @@ export default class SearchConcertController extends Component {
 			let setList = [];
 			let i;
 			for (i in parts){
+				console.log('PARTE ' + parts[i]);
 				let res = /([0-9]{0,2}:)?[0-9]{2}:[0-9]{2}/.test(parts[i]); //here goes time as (hh:)mm:ss
 				if (res){
 					let trackTime = /([0-9]{0,2}:)?[0-9]{2}:[0-9]{2}/.exec(parts[i])[0];
+					console.log(trackTime);
 					let trackSplit = parts[i].split(trackTime);
-					//console.log(trackSplit);
+					console.log(trackSplit);
 					let trackName = trackSplit[0];
 					if (trackName.length <= 0){
 						trackName = trackSplit[1];
@@ -81,16 +83,9 @@ export default class SearchConcertController extends Component {
 					let trackData = {timeStamp: trackTime, songName: trackName.trim()}
 					//console.log(trackData);
 					setList.push(trackData);
-					console.log('(*#&$(#&*(&@(*$&(@#&$(&@(' + setList);
+					//console.log('(*#&$(#&*(&@(*$&(@#&$(&@(' + setList);
 				}
 				
-				// for (eachItem in res){
-				// 	console.log('parse: ',res[eachItem]);
-				// 	if (res[eachItem]){
-				// 		list.push(res[eachItem]);
-				// 	}
-				// }	
-				// console.log('nome da musica: ',parts[i].split(list[0]));
 			}
 
 			this.props.navigation.navigate('Playlist',{setlist:JSON.stringify(setList)});
